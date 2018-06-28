@@ -16,10 +16,18 @@ var books = [{
 	authors: [authors[0],authors[1]]
   }
 ];
+
 var resolvers = {
 	Query: {
 		books: () => {
 			return books;
+		},
+		book: (root, args) => {
+			var res=null;
+			books.forEach(function(b){
+				if (b.title === args.title) res=b;
+			});
+			return res;
 		},
 	},
 };

@@ -12,6 +12,7 @@ const typeDefs = `
   }
   type Query {
 	  books: [Book]
+    book(title:String!): Book
   }
 `;
 var schema = makeExecutableSchema({ typeDefs, resolvers });
