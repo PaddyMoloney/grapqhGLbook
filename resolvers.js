@@ -16,7 +16,7 @@ var books = [{
 	authors: [authors[0],authors[1]]
   }
 ];
-
+var nextId = 5;
 var resolvers = {
 	Query: {
 		books: () => {
@@ -30,5 +30,12 @@ var resolvers = {
 			return res;
 		},
 	},
+	Mutation: {
+		addBook: (root, args) => {
+			var newBook = {id: nextId++, title: args.title };
+			books.push(newBook);
+			return newBook;
+		},
+	}
 };
 module.exports = resolvers;

@@ -14,6 +14,9 @@ const typeDefs = `
 	  books: [Book]
     book(title:String!): Book
   }
+  type Mutation {
+    addBook(title: String!): Book
+  }
 `;
 var schema = makeExecutableSchema({ typeDefs, resolvers });
 module.exports = schema;
