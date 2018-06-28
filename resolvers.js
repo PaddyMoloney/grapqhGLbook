@@ -1,3 +1,5 @@
+var {PubSub} = require('graphql-subscriptions');
+var pubsub = new PubSub();
 var authors = [{
 	id: 1,
 	name: 'Author 1'
@@ -7,11 +9,11 @@ var authors = [{
   }
 ];
 var books = [{
-	id: 3,
+	id: 1,
 	title: 'Book 1',
 	authors: [authors[0]]
   },{
-	id: 4,
+	id: 2,
 	title: 'Book 2',
 	authors: [authors[0],authors[1]]
   }
@@ -23,7 +25,7 @@ var resolvers = {
 			return books;
 		},
 		book: (root, args) => {
-			var res=null;
+			var res = null;
 			books.forEach(function(b){
 				if (b.title === args.title) res=b;
 			});
@@ -34,8 +36,14 @@ var resolvers = {
 		addBook: (root, args) => {
 			var newBook = {id: nextId++, title: args.title };
 			books.push(newBook);
+			pubsub.publish('bookAddedTopic', { bookAdded: newBook});
 			return newBook;
-		},
+	    },
+	},
+	Subscription: {
+		bookAdded: {
+	 		subscribe: () => pubsub.asyncIterator('bookAddedTopic')
+		}
 	}
 };
-module.exports = resolvers;
+module.exports = resolvers; 
